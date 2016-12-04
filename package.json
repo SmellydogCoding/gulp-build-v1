@@ -1,0 +1,27 @@
+{
+  "name": "gulp-build-v1",
+  "version": "1.0.0",
+  "description": "Treehouse Techdegree Gulp Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SmellydogCoding/gulp-build-v1.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SmellydogCoding/gulp-build-v1/issues"
+  },
+  "homepage": "https://github.com/SmellydogCoding/gulp-build-v1#readme",
+  "devDependencies": {
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-sourcemaps": "^1.9.1",
+    "gulp-uglify": "^2.0.0"
+  }
+}
