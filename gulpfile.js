@@ -8,14 +8,27 @@ const sass = require('gulp-sass');
 const converter = require('sass-convert');
 const csso = require('gulp-csso');
 const imagemin = require('gulp-imagemin');
+const eslint = require('gulp-eslint');
 
-gulp.task('concatJS', function() {
+gulp.task('lint', () => {
+  return gulp.src('js/**/*.js')
+  .pipe(eslint({
+    "env": {
+      "browser": true,
+      "node": true
+    }
+  }))
+  .pipe(eslint.format())
+  .pipe(eslint.failAfterError());
+});
+
+gulp.task('concatJS', gulp.series('lint', function(done) {
     return gulp.src(['js/**/*.js'])
     .pipe(maps.init())
     .pipe(concat('all.js'))
     .pipe(maps.write('./'))
     .pipe(gulp.dest('dist/scripts'));
-});
+}));
 
 gulp.task('minifyJS', gulp.series('concatJS', function(done) {
   return gulp.src('dist/scripts/all.js')
