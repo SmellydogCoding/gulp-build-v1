@@ -1,12 +1,6 @@
 {
   "name": "gulp-build-v1",
   "version": "1.0.0",
-  "eslint-config": {
-     "env": {
-        "browser": true,
-        "node": true
-     }
-  },
   "description": "Treehouse Techdegree Gulp Project",
   "main": "index.js",
   "scripts": {
