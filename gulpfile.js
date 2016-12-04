@@ -17,16 +17,12 @@ gulp.task('concatJS', function() {
     .pipe(gulp.dest('dist/scripts'));
 });
 
-gulp.task('minifyJS', ['concatJS'], function() {
+gulp.task('minifyJS', gulp.series('concatJS', function(done) {
   return gulp.src('dist/scripts/all.js')
     .pipe(uglify())
     .pipe(rename('all.min.js'))
     .pipe(gulp.dest('dist/scripts'));
-});
-
-gulp.task('scripts', ['minifyJS'], function() {
-  del(['dist/scripts/all.js']);
-});
+}));
 
 gulp.task('sassconvert', function () {
   return gulp.src('sass/**/*+(sass|scss)')
@@ -38,25 +34,31 @@ gulp.task('sassconvert', function () {
     .pipe(gulp.dest('sasstemp'));
 });
 
-gulp.task('sasscompile', ['sassconvert'], function() {
+gulp.task('sasscompile', gulp.series('sassconvert', function() {
   return gulp.src("sasstemp/global.scss")
       .pipe(rename('all.scss'))
       .pipe(maps.init())
       .pipe(sass())
       .pipe(maps.write('./'))
       .pipe(gulp.dest('dist/styles'));
-});
+}));
 
-gulp.task('sassminify', ['sasscompile'], function () {
+gulp.task('sassminify', gulp.series('sasscompile', function () {
     return gulp.src('dist/styles/all.css')
         .pipe(csso())
         .pipe(rename('all.min.css'))
         .pipe(gulp.dest('dist/styles'));
-});
+}));
 
-gulp.task('styles', ['sassminify'], function() {
+gulp.task('scripts', gulp.series('minifyJS', function(done) {
+  del(['dist/scripts/all.js']);
+  done();
+}));
+
+gulp.task('styles', gulp.series('sassminify', function(done) {
   del(['dist/styles/all.css','sasstemp']);
-});
+  done();
+}));
 
 gulp.task('images', () =>
     gulp.src('images/*')
@@ -64,10 +66,13 @@ gulp.task('images', () =>
         .pipe(gulp.dest('dist/content'))
 );
 
-gulp.task('clean', function() {
+gulp.task('clean', function(done) {
   del(['dist']);
+  done();
 });
 
-gulp.task('default', function() {
-  // place code for your default task here
-});
+gulp.task('build', gulp.series('clean', 'scripts', 'styles', 'images', function(done) {
+  done();
+}));
+
+gulp.task('default', gulp.series('build'));
