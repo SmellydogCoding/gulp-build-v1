@@ -65,7 +65,7 @@ gulp.task('images', () =>
 );
 
 gulp.task('clean', function() {
-  del(['dist/scripts/all.js']);
+  del(['dist']);
 });
 
 gulp.task('default', function() {
