@@ -7,6 +7,7 @@ const del = require('del');
 const sass = require('gulp-sass');
 const converter = require('sass-convert');
 const csso = require('gulp-csso');
+const imagemin = require('gulp-imagemin');
 
 gulp.task('concatJS', function() {
     return gulp.src(['js/**/*.js'])
@@ -56,6 +57,12 @@ gulp.task('sassminify', ['sasscompile'], function () {
 gulp.task('styles', ['sassminify'], function() {
   del(['dist/styles/all.css','sasstemp']);
 });
+
+gulp.task('images', () =>
+    gulp.src('images/*')
+        .pipe(imagemin())
+        .pipe(gulp.dest('dist/content'))
+);
 
 gulp.task('clean', function() {
   del(['dist/scripts/all.js']);
